@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019, Alexander Joseph Swanson Villares
+Property of Alexander Joseph Swanson Villares
 alexanderjswanson@icloud.com | https://github.com/ajswanny
 */
 
@@ -111,9 +111,8 @@ public class AdjacencyList {
     /* Use Example */
     public static void main(String[] args) {
 
-        Scanner input = new Scanner(System.in);
         String errorMessage = "Please enter an integer from 1 to 8.";
-        int response;
+        int response = -1;
 
         // Initialize an AdjacencyList.
         AdjacencyList adjacencyList = new AdjacencyList(8);
@@ -129,6 +128,9 @@ public class AdjacencyList {
         adjacencyList.addEdges(8, new int[]{3, 7});
 
         while (true) {
+
+            // Initialize input scanner.
+            Scanner input = new Scanner(System.in);
 
             // Output status.
             System.out.print("BFS Starting vertex (0 to quit): ");
