@@ -191,32 +191,54 @@ public class IntervalPartitioning {
     /* Constructor */
     /**
      * The default constructor.
-     * @param filePath The file-location of the list of Lectures.
      */
-    private IntervalPartitioning(String filePath) {
+    private IntervalPartitioning() {
 
-        try {
+        while (true) {
 
-            ArrayList<Lecture> lectures = new ArrayList<>();
+            Scanner scanner = new Scanner(System.in);
 
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            System.out.print("Enter the name of a text file (q to quit): ");
+            String input = scanner.next();
+            System.out.println();
 
-            String line;
-            while ( (line = reader.readLine()) != null) {
+            if (input.equals("q")) { System.out.println("Goodbye"); break; }
 
-                line = line.replace("(", ""); line = line.replace(")", ""); line = line.replace(" ", "");
-                String[] values = line.split(",");
-                lectures.add(new Lecture(values[0], Integer.valueOf(values[1]), Integer.valueOf(values[2])));
+            try {
+
+                ArrayList<Lecture> lectures = new ArrayList<>();
+
+                InputStream inputStream = getClass().getClassLoader().getResourceAsStream(input);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+
+                    line = line.replace("(", "");
+                    line = line.replace(")", "");
+                    line = line.replace(" ", "");
+                    String[] values = line.split(",");
+                    lectures.add(new Lecture(values[0], Integer.valueOf(values[1]), Integer.valueOf(values[2])));
+
+                }
+
+                // Run the Interval-Scheduling algorithm to schedule the input Lectures.
+                scheduleLectures(lectures);
+
+            } catch (FileNotFoundException e) {
+
+                System.out.println("Could not locate the file: " + input);
+
+            } catch (IOException e) {
+
+                System.out.println("IOException when reading specified file. Please check that the TXT file is valid");
+
+            } catch (NullPointerException e) {
+
+                System.out.println("That file contains no text or does not exist. Please enter the name of a valid " +
+                        "file");
 
             }
-
-            // Run the Interval-Scheduling algorithm to schedule the input Lectures.
-            scheduleLectures(lectures);
-
-        } catch (IOException e) {
-
-            System.out.println("Could not locate the file: " + filePath);
 
         }
 
@@ -224,7 +246,7 @@ public class IntervalPartitioning {
 
     public static void main(String[] args) {
 
-        new IntervalPartitioning("lectures1.txt");
+        new IntervalPartitioning();
 
     }
 
