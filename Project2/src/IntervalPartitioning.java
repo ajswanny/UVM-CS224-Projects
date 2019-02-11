@@ -117,73 +117,81 @@ public class IntervalPartitioning {
      */
     private void scheduleLectures(List<Lecture> lectures) {
 
-        // Sort the Lectures in the given list.
-        Collections.sort(lectures);
+        try {
 
-        // Initialize the first Classroom to hold lectures.
-        Classroom classroom = new Classroom(lectures.get(0), 1);
+            // Sort the Lectures in the given list.
+            Collections.sort(lectures);
 
-        // Initialize a Priority Queue for Classrooms and add a first value.
-        PriorityQueue<Classroom> classroomQueue = new PriorityQueue<>();
-        classroomQueue.add(classroom);
+            // Initialize the first Classroom to hold lectures.
+            Classroom classroom = new Classroom(lectures.get(0), 1);
 
-        // Initialize a counter for the amount of allocated classrooms.
-        int allocatedClassrooms = 1;
+            // Initialize a Priority Queue for Classrooms and add a first value.
+            PriorityQueue<Classroom> classroomQueue = new PriorityQueue<>();
+            classroomQueue.add(classroom);
 
-        System.out.println("During the program run:");
-        System.out.printf(
-                "Room %d: (%s, %d, %d)\n",
-                classroom.roomNumber, lectures.get(0).lectureId, lectures.get(0).startTime, lectures.get(0).finishTime
-        );
+            // Initialize a counter for the amount of allocated classrooms.
+            int allocatedClassrooms = 1;
 
-        // Apply an implementation of Interval Scheduling to the Lectures.
-        for (int i = 1; i < lectures.size(); i++) {
+            System.out.println("During the program run:");
+            outputDataFor(classroom, lectures.get(0));
 
-            // Fetch the Classroom with the earliest finish-time.
-            classroom = classroomQueue.peek();
+            // Apply an implementation of Interval Scheduling to the Lectures.
+            for (int i = 1; i < lectures.size(); i++) {
 
-            // Fetch the next Lecture.
-            Lecture lecture = lectures.get(i);
+                // Fetch the Classroom with the earliest finish-time.
+                classroom = classroomQueue.peek();
 
-            // If the finish-time of the current Lecture in iteration is less than the latest finish-time for the
-            // current Classroom in iteration, schedule the Lecture within that Classroom.
-            if (lectures.get(i).finishTime >= classroom.findMaxFinishTime()) {
+                // Fetch the next Lecture.
+                Lecture lecture = lectures.get(i);
 
-                classroom.addLecture(lecture);
+                // If the finish-time of the current Lecture in iteration is less than the latest finish-time for the
+                // current Classroom in iteration, schedule the Lecture within that Classroom.
+                assert classroom != null;
+                if (lectures.get(i).startTime >= classroom.findMaxFinishTime()) {
 
-                // Output status.
-                System.out.printf(
-                        "Room %d: (%s, %d, %d)\n",
-                        classroom.roomNumber, lecture.lectureId, lecture.startTime, lecture.finishTime
-                );
+                    classroom.addLecture(lecture);
+                    outputDataFor(classroom, lecture);
 
-            } else {
+                } else {
 
-                allocatedClassrooms++;
-                classroom = new Classroom(lecture, allocatedClassrooms);
-                classroomQueue.add(classroom);
+                    allocatedClassrooms++;
+                    classroom = new Classroom(lecture, allocatedClassrooms);
+                    classroomQueue.add(classroom);
 
-                // Output status.
-                System.out.printf(
-                        "Room %d: (%s, %d, %d)\n",
-                        classroom.roomNumber, lecture.lectureId, lecture.startTime, lecture.finishTime
-                );
+                    outputDataFor(classroom, lecture);
+
+                }
 
             }
 
+            // Output Lecture scheduling.
+            System.out.println("After the end of the program run:");
+            for (int i = 1; i <= allocatedClassrooms; i++) {
+
+                Classroom c = classroomQueue.poll();
+                System.out.printf("Room %d: ", c.roomNumber);
+                for (Lecture l : c.lectures) {
+                    System.out.printf("(%s, %d, %d) ", l.lectureId, l.startTime, l.finishTime);
+                }
+                System.out.println();
+
+            }
+
+        } catch (IndexOutOfBoundsException e) {
+
+            System.out.println("There is no Lecture data in the provided file.");
+
         }
 
-        // Output Lecture scheduling.
-        System.out.println("After the end of the program run:");
-        for (int i = 1; i <= allocatedClassrooms; i++) {
 
-            Classroom c = classroomQueue.poll();
-            System.out.printf("Room %d: ", c.roomNumber);
-            for (Lecture l : c.lectures) { System.out.printf("(%s, %d, %d) ", l.lectureId, l.startTime, l.finishTime); }
-            System.out.println();
+    }
 
-        }
+    private void outputDataFor(Classroom classroom, Lecture lecture) {
 
+        System.out.printf(
+                "Room %d: (%s, %d, %d)\n",
+                classroom.roomNumber, lecture.lectureId, lecture.startTime, lecture.finishTime
+        );
 
     }
 
@@ -206,20 +214,22 @@ public class IntervalPartitioning {
 
             try {
 
+                // Create a container for Lectures to be scheduled.
                 ArrayList<Lecture> lectures = new ArrayList<>();
 
+                // Define methodology for reading the specified TXT file containing Lecture data.
                 InputStream inputStream = getClass().getClassLoader().getResourceAsStream(input);
+                assert inputStream != null;
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
                 String line;
-                while ((line = reader.readLine()) != null) {
 
+                // Read, clean, and record the data.
+                while ((line = reader.readLine()) != null) {
                     line = line.replace("(", "");
                     line = line.replace(")", "");
                     line = line.replace(" ", "");
                     String[] values = line.split(",");
                     lectures.add(new Lecture(values[0], Integer.valueOf(values[1]), Integer.valueOf(values[2])));
-
                 }
 
                 // Run the Interval-Scheduling algorithm to schedule the input Lectures.
