@@ -37,13 +37,15 @@ class Graph {
 
             System.out.printf("Vertex (ID): (%s) | Neighbors (ID): ", traceableGraphVertex.getId());
 
-            if (traceableGraphVertex.getNeighbors().isEmpty()) { System.out.print("None"); System.out.println(); continue; }
+            if (traceableGraphVertex.getEdges().isEmpty()) { System.out.print("None"); System.out.println(); } else {
 
-            for (TraceableGraphVertex neighbor : traceableGraphVertex.getNeighbors()) {
-                System.out.printf("(%s)", neighbor.getId());
+                for (GraphEdge edge : traceableGraphVertex.getEdges()) {
+                    System.out.printf("(%s) ", edge.getDestination().getId());
+                }
+
+                System.out.println();
+
             }
-
-            System.out.println();
 
         }
 
@@ -61,6 +63,10 @@ class Graph {
 
         return null;
 
+    }
+
+    public ArrayList<TraceableGraphVertex> getVertices() {
+        return vertices;
     }
 
 }

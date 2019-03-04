@@ -3,14 +3,25 @@ package dijkstra;
 class GraphEdge {
 
     private TraceableGraphVertex origin;
-    private TraceableGraphVertex target;
+    private TraceableGraphVertex destination;
 
-    private double weight;
+    private int weight;
 
-    GraphEdge(TraceableGraphVertex target, TraceableGraphVertex origin, double weight) {
+    GraphEdge(TraceableGraphVertex origin, TraceableGraphVertex destination, int weight) {
 
-        this.origin = origin; this.target = target; this.weight = weight;
+        this.origin = origin; this.destination = destination; this.weight = weight;
 
     }
 
+    public TraceableGraphVertex getOrigin() {
+        return origin;
+    }
+
+    public TraceableGraphVertex getDestination() {
+        return destination;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
 }
