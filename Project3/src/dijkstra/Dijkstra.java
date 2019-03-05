@@ -1,53 +1,59 @@
 package dijkstra;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class Dijkstra {
 
-    private static TraceableGraphVertex ExtractMin(PriorityQueue<TraceableGraphVertex> Q) {
-
-        return Q.poll();
-
-    }
-
-    private static void ChangeKey(PriorityQueue<TraceableGraphVertex> Q, TraceableGraphVertex w, int newDistanceOfW) {
-
-        Q.remove(w);
-        w.setDistanceToGraphSource(newDistanceOfW);
-        Q.add(w);
-
-    }
-
-    public static void computeForGraph(Graph graph, TraceableGraphVertex sourceVertex) {
+    /**
+     * Computes the shortest path to every node (vertex) in a given graph using Dijkstra's famous algorithm.
+     */
+    private static void computeForGraph(Graph graph, TraceableGraphVertex sourceVertex) {
 
         // Set a(vertex) = infinity for every vertex in the graph.
-        for (TraceableGraphVertex vertex : graph.getVertices()) { vertex.setDistanceToGraphSource(Integer.MAX_VALUE); }
+        // TODO: Change to Double.
+        for (TraceableGraphVertex vertex : graph.getVertices()) {
+            vertex.minDistanceToGraphSource = Double.POSITIVE_INFINITY;
+        }
 
+        // Initialize the PriorityQueue, Q, the set of discovered nodes, S, and helper variables.
         PriorityQueue<TraceableGraphVertex> Q = new PriorityQueue<>(graph.getVertices());
         HashSet<TraceableGraphVertex> S = new HashSet<>(8);
-        sourceVertex.setDistanceToGraphSource(0);
         TraceableGraphVertex v;
         TraceableGraphVertex w;
-        int newDistanceOfW;
+        double newPathLenghtOfW;
 
+        // Initialize a(sourceVertex) = 0.
+        sourceVertex.minDistanceToGraphSource = 0;
+
+        // Perform Dijkstra's algorithm.
         while (!Q.isEmpty()) {
 
-            v = ExtractMin(Q);
-
+            v = Q.poll();
             S.add(v);
 
-            for (GraphEdge edge : v.getEdges()) {
+            for (GraphEdge edge : v.edges) {
 
                 w = edge.getDestination();
 
                 if (!S.contains(w)) {
 
-                    if (v.getDistanceToGraphSource() + edge.getWeight() < w.getDistanceToGraphSource()) {
+                    if (v.minDistanceToGraphSource + edge.getWeight() < w.minDistanceToGraphSource) {
 
-                        w.setPreviousVertexInPath(v);
-                        newDistanceOfW = v.getDistanceToGraphSource() + edge.getWeight();
-                        ChangeKey(Q, w, newDistanceOfW);
+                        // Remove w from Q for editing.
+                        Q.remove(w);
+
+                        // Determine the new path-length for w.
+                        newPathLenghtOfW = v.minDistanceToGraphSource + edge.getWeight();
+                        w.minDistanceToGraphSource = newPathLenghtOfW;
+
+                        // Determine the new path-to-source-vertex for w.
+                        w.pathToSource = new LinkedList<>(v.pathToSource);
+                        w.appendPathToSource(v);
+
+                        // Re-enter w.
+                        Q.add(w);
 
                     }
 
@@ -59,10 +65,9 @@ public class Dijkstra {
 
     }
 
-    public static void main(String[] args) {
+    private static void UVMCS224Example() {
 
-
-        // Construct a graph.e
+        // Construct a graph
         Graph graph = new Graph(8);
         TraceableGraphVertex vS, v2, v3, v4, v5, v6, v7, vT;
         vS = new TraceableGraphVertex("s"); graph.addVertex(vS);
@@ -82,20 +87,23 @@ public class Dijkstra {
         v6.addEdge(v3, 18); v6.addEdge(v5, 30); v6.addEdge(v7, 5);
         v7.addEdge(v5, 20); v7.addEdge(vT, 44);
 
-        graph.print();
-
-        System.out.println("----------------------------------");
-
+        System.out.println("Performing shortest-path-to-nodes search using Dijkstra's algorithm and an Adjacency List" +
+                " data structure.");
         computeForGraph(graph, vS);
+        System.out.format("%6s%20s%20s\n", "Vertex", "Distance", "Path");
         for (TraceableGraphVertex vertex : graph.getVertices()) {
 
-            System.out.printf(
-                    "Vertex: %s \t Distance: %d \t Previous: %s \n",
-                    vertex, vertex.getDistanceToGraphSource(), vertex.getPreviousVertexInPath()
+            System.out.format(
+                    "%3s%20s%30s\n", vertex, vertex.minDistanceToGraphSource, vertex.getPath()
             );
 
         }
 
+    }
+
+    public static void main(String[] args) {
+
+        UVMCS224Example();
 
     }
 
