@@ -1,25 +1,49 @@
+/*
+Created by Alexander Swanson on 03/04/19.
+*/
+
+
+/* Package */
 package dijkstra;
 
+
+/* Imports */
 import java.util.ArrayList;
 
-@SuppressWarnings("SameParameterValue")
+
+/**
+ * An implementation of a Graph.
+ */
 class Graph {
 
+    /* Class Fields */
+    /**
+     * The list of Vertices in this Graph.
+     */
     private ArrayList<TraceableGraphVertex> vertices;
 
+
+    /* Constructors */
+    /**
+     * The default constructor.
+     */
     Graph(int numberOfNodes) {
-
         vertices = new ArrayList<>(numberOfNodes);
-
     }
 
+
+    /* Methods */
+    /**
+     * Adds a Vertex (or Node) to this Graph.
+     */
     void addVertex(TraceableGraphVertex vertex) {
-
         vertices.add(vertex);
-
     }
 
-    public ArrayList<TraceableGraphVertex> getVertices() {
+    /**
+     * Returns all of the Vertices belonging to this Graph.
+     */
+    ArrayList<TraceableGraphVertex> getVertices() {
         return vertices;
     }
 

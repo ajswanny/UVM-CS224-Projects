@@ -1,27 +1,55 @@
+/*
+Created by Alexander Swanson on 03/03/19.
+*/
+
+
+/* Package */
 package dijkstra;
 
+
+/**
+ * An implementation of a Graph Edge connecting two Vertices.
+ */
 class GraphEdge {
 
+    /* Class Fields */
+    /**
+     * The origin Vertex.
+     */
     private TraceableGraphVertex origin;
+
+    /**
+     * The destination Vertex.
+     */
     private TraceableGraphVertex destination;
 
+    /**
+     * The weight of the Edge.
+     */
     private int weight;
 
+
+    /* Constructors */
+    /**
+     * The default constructor.
+     */
     GraphEdge(TraceableGraphVertex origin, TraceableGraphVertex destination, int weight) {
-
         this.origin = origin; this.destination = destination; this.weight = weight;
-
     }
 
-    public TraceableGraphVertex getOrigin() {
-        return origin;
-    }
-
-    public TraceableGraphVertex getDestination() {
+    /* Methods */
+    /**
+     * Returns the destination-Vertex of this Edge.
+     */
+    TraceableGraphVertex getDestination() {
         return destination;
     }
 
-    public int getWeight() {
+    /**
+     * Returns the weight of this Edge.
+     */
+    int getWeight() {
         return weight;
     }
+
 }

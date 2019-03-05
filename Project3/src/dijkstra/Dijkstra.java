@@ -1,8 +1,17 @@
+/*
+Created by Alexander Swanson on 03/04/19.
+*/
+
+
+/* Package */
 package dijkstra;
 
+
+/* Imports */
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
+
 
 public class Dijkstra {
 
@@ -12,7 +21,6 @@ public class Dijkstra {
     private static void computeForGraph(Graph graph, TraceableGraphVertex sourceVertex) {
 
         // Set a(vertex) = infinity for every vertex in the graph.
-        // TODO: Change to Double.
         for (TraceableGraphVertex vertex : graph.getVertices()) {
             vertex.minDistanceToGraphSource = Double.POSITIVE_INFINITY;
         }
@@ -78,7 +86,6 @@ public class Dijkstra {
         v6 = new TraceableGraphVertex("6"); graph.addVertex(v6);
         v7 = new TraceableGraphVertex("7"); graph.addVertex(v7);
         vT = new TraceableGraphVertex("t"); graph.addVertex(vT);
-
         vS.addEdge(v2, 9); vS.addEdge(v6, 14); vS.addEdge(v7, 15);
         v2.addEdge(v3, 23);
         v3.addEdge(v5, 2); v3.addEdge(vT, 19);
@@ -87,6 +94,7 @@ public class Dijkstra {
         v6.addEdge(v3, 18); v6.addEdge(v5, 30); v6.addEdge(v7, 5);
         v7.addEdge(v5, 20); v7.addEdge(vT, 44);
 
+        // Output result of Dijkstra's.
         System.out.println("Performing shortest-path-to-nodes search using Dijkstra's algorithm and an Adjacency List" +
                 " data structure.");
         computeForGraph(graph, vS);
