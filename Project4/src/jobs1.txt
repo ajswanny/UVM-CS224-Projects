@@ -1,0 +1,4 @@
+# (ID, start time, end time, value)
+(a,  4, 15, 4)
+(b, 11, 18, 5)
+(c,  1,  8, 2)
