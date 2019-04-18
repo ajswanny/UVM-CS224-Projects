@@ -1,5 +1,9 @@
 .idea/
-CS224.iml
-Project1/Project1.iml
-
 *.iml
+.DS_Store
+Ford-Fulkerson/src/Graph.java
+Ford-Fulkerson/src/GraphEdge.java
+Ford-Fulkerson/src/GraphVertex.java
+Project2/src/lectures1.txt
+lib/
+out/
