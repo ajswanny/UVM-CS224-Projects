@@ -1,9 +1,10 @@
 .idea/
 *.iml
 .DS_Store
-Ford-Fulkerson/src/Graph.java
-Ford-Fulkerson/src/GraphEdge.java
-Ford-Fulkerson/src/GraphVertex.java
+Ford-Fulkerson/src/Bag.java
+Ford-Fulkerson/src/FlowEdge.java
+Ford-Fulkerson/src/FlowNetwork.java
+Ford-Fulkerson/src/StdRandom.java
 Project2/src/lectures1.txt
 lib/
 out/

@@ -13,42 +13,57 @@ class GraphEdge {
 
     /* Class Fields */
     /**
-     * The origin Vertex.
+     * The v Vertex.
      */
-    private TraceableGraphVertex origin;
+    private int v;
 
     /**
-     * The destination Vertex.
+     * The w Vertex.
      */
-    private TraceableGraphVertex destination;
+    private int w;
 
     /**
-     * The weight of the Edge.
+     * The capacity of the Edge.
      */
-    private int weight;
+    int capacity;
+
+    int flow;
+
+    int residualCapacity;
 
 
     /* Constructors */
     /**
      * The default constructor.
      */
-    GraphEdge(TraceableGraphVertex origin, TraceableGraphVertex destination, int weight) {
-        this.origin = origin; this.destination = destination; this.weight = weight;
+    GraphEdge(int v, int w, int capacity, int flow) {
+        this.v = v; this.w = w; this.capacity = capacity; this.flow = flow;
     }
 
-    /* Methods */
-    /**
-     * Returns the destination-Vertex of this Edge.
-     */
-    TraceableGraphVertex getDestination() {
-        return destination;
+    int residualCapacityTo(int vertex) {
+        if (vertex == v) {
+            return flow;
+        } else {
+            return capacity - flow;
+        }
     }
 
-    /**
-     * Returns the weight of this Edge.
-     */
-    int getWeight() {
-        return weight;
+    int other(int vertex) {
+        if (vertex == v) {
+            return w;
+        } else if (vertex == w) {
+            return v;
+        } else {
+            throw  new IllegalArgumentException();
+        }
+    }
+
+    int origin() {
+        return v;
+    }
+
+    int destination() {
+        return w;
     }
 
 }

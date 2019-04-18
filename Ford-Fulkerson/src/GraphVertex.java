@@ -15,35 +15,37 @@ import java.util.LinkedList;
  * a specified Graph's source Vertex.
  */
 @SuppressWarnings("NullableProblems")
-class TraceableGraphVertex implements Comparable<TraceableGraphVertex> {
+class GraphVertex implements Comparable<GraphVertex> {
 
     /* Class Fields */
     /**
      * Common identifier for this Vertex.
      */
-    private String id;
+    int id;
 
     /**
      * Minimum distance to the Vertex's Graph's source.
      */
-    double minDistanceToGraphSource;
+    private double minDistanceToGraphSource;
 
     /**
      * List of Vertices leading to a Graph source.
      */
-    LinkedList<TraceableGraphVertex> pathToSource;
+    private LinkedList<GraphVertex> pathToSource;
 
     /**
      * List of edges leading to neighboring Vertices.
      */
     ArrayList<GraphEdge> edges;
 
+    int flow;
+
 
     /* Constructors */
     /**
      * Default constructor.
      */
-    TraceableGraphVertex(String id) {
+    GraphVertex(int id) {
 
         this.id = id;
         edges = new ArrayList<>();
@@ -56,14 +58,14 @@ class TraceableGraphVertex implements Comparable<TraceableGraphVertex> {
     /**
      * Adds an edge with a specified edge-weight to a neighboring Vertex.
      */
-    void addEdge(TraceableGraphVertex destinationVertex, int edgeWeight) {
-        edges.add(new GraphEdge(this, destinationVertex, edgeWeight));
+    void addEdge(GraphVertex destinationVertex, int edgeWeight) {
+        edges.add(new GraphEdge(this, destinationVertex, edgeWeight, 0));
     }
 
     /**
      * Adds a new Vertex to the list of path-to-source Vertices.
      */
-    void appendPathToSource(TraceableGraphVertex newVertex) {
+    void appendPathToSource(GraphVertex newVertex) {
         pathToSource.add(newVertex);
     }
 
@@ -73,7 +75,7 @@ class TraceableGraphVertex implements Comparable<TraceableGraphVertex> {
     String getPath() {
 
         StringBuilder x = new StringBuilder();
-        for (TraceableGraphVertex vertex : pathToSource) { x.append(vertex).append(" - "); }
+        for (GraphVertex vertex : pathToSource) { x.append(vertex).append(" - "); }
         x.append(this);
         return x.toString();
     }
@@ -82,14 +84,14 @@ class TraceableGraphVertex implements Comparable<TraceableGraphVertex> {
      * Overridden String output to return the Vertex's ID.
      */
     public String toString() {
-        return id;
+        return String.valueOf(id);
     }
 
     /**
      * Overridden comparator to force comparison of Vertex distances to Graph sources.
      */
     @Override
-    public int compareTo(TraceableGraphVertex otherVertex) {
+    public int compareTo(GraphVertex otherVertex) {
         return Double.compare(minDistanceToGraphSource, otherVertex.minDistanceToGraphSource);
     }
 

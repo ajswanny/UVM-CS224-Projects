@@ -8,6 +8,7 @@ Created by Alexander Swanson on 03/04/19.
 
 /* Imports */
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 
 /**
@@ -19,31 +20,32 @@ class Graph {
     /**
      * The list of Vertices in this Graph.
      */
-    private ArrayList<TraceableGraphVertex> vertices;
+    int numOfVertices;
+
+    int numOfEdges;
+
+    LinkedList<GraphEdge>[] adj;
 
 
     /* Constructors */
     /**
      * The default constructor.
      */
-    Graph(int numberOfNodes) {
-        vertices = new ArrayList<>(numberOfNodes);
+    Graph(int numOfVertices) {
+        this.numOfVertices = numOfVertices;
+        numOfEdges = 0;
+        adj = (LinkedList<GraphEdge>[]) new LinkedList[numOfVertices];
+        for (int v = 0; v < numOfVertices; v++) {
+            adj[v] = new LinkedList<>();
+        }
     }
 
-
-    /* Methods */
-    /**
-     * Adds a Vertex (or Node) to this Graph.
-     */
-    void addVertex(TraceableGraphVertex vertex) {
-        vertices.add(vertex);
-    }
-
-    /**
-     * Returns all of the Vertices belonging to this Graph.
-     */
-    ArrayList<TraceableGraphVertex> getVertices() {
-        return vertices;
+    void addEdge(GraphEdge e) {
+        int v = e.origin();
+        int w = e.destination();
+        adj[v].add(e);
+        adj[w].add(e);
+        numOfEdges++;
     }
 
 }
