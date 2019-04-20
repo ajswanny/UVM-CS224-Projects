@@ -2,35 +2,20 @@
 Created by Alexander Swanson on 03/03/19.
 */
 
-
-/* Package */
-
-
 /**
  * An implementation of a Graph Edge connecting two Vertices.
  */
 class GraphEdge {
 
-    /* Class Fields */
-    /**
-     * The v Vertex.
-     */
+    /* Fields */
+    /** Tail */
     private int v;
 
-    /**
-     * The w Vertex.
-     */
+    /** Head */
     private int w;
 
-    /**
-     * The capacity of the Edge.
-     */
     double capacity;
-
-    double flow;
-
-    double residualFlow;
-
+    private double flow;
 
     /* Constructors */
     /**
@@ -43,45 +28,19 @@ class GraphEdge {
         this.flow = 0;
     }
 
-    double residualCapacityTo(int vertex) {
+    /* Methods */
+    /**
+     * Updates flow for this edge.
+     * @param vertex The head of the Edge.
+     */
+    void updateFlowTo(int vertex, double amount) {
         if (vertex == v) {
-            return flow;
-        } else {
-            return capacity - flow;
-        }
-    }
-
-    void addResidualFlowToVertex(int vertex, double residualFlow) {
-
-        // Backward edge
-        if (vertex == v) {
-            flow -= residualFlow;
-            this.residualFlow = flow;
-
-        // Forward Edge
+            // vertex is a backward edge
+            flow -= amount;
         } else if (vertex == w) {
-            flow += residualFlow;
-            this.residualFlow = flow;
+            // vertex is a forward edge
+            flow += amount;
         }
-
-    }
-
-    int other(int vertex) {
-        if (vertex == v) {
-            return w;
-        } else if (vertex == w) {
-            return v;
-        } else {
-            throw  new IllegalArgumentException();
-        }
-    }
-
-    int origin() {
-        return v;
-    }
-
-    int destination() {
-        return w;
     }
 
     @Override
@@ -97,6 +56,9 @@ class GraphEdge {
         return stringBuilder.toString();
     }
 
+    /**
+     * Formatted 'toString()'.
+     */
     String toStringWithEndVertex(int t) {
         StringBuilder stringBuilder = new StringBuilder();
         if (v == 0) {
@@ -113,6 +75,48 @@ class GraphEdge {
         }
 
         return stringBuilder.toString();
+    }
+
+    /* Getters */
+    /** Gets the tail of this Edge */
+    int getOrigin() {
+        return v;
+    }
+
+    /** Gets the head of this Edge */
+    int getDestination() {
+        return w;
+    }
+
+    double getResidualCapacityTo(int vertex) {
+        if (vertex == v) {
+            return flow;
+        } else {
+            return capacity - flow;
+        }
+    }
+
+    double getFlow() {
+        return flow;
+    }
+
+    /**
+     * Returns the vertex opposite to 'vertex' along this Edge.
+     * @param vertex Origin vertex.
+     */
+    int getOppositeVertexAlongEdgeOf(int vertex) {
+        if (vertex == v) {
+            return w;
+        } else if (vertex == w) {
+            return v;
+        } else {
+            throw new IllegalArgumentException("That vertex is not a part of this GraphEdge.");
+        }
+    }
+
+    /* Setters */
+    public void setFlow(double flow) {
+        this.flow = flow;
     }
 
 }

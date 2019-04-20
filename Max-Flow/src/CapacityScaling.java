@@ -29,13 +29,13 @@ public class CapacityScaling {
             while (hasAugmentingPath(g, s, t)) {
 
                 // Compute the bottleneck.
-                for (int v = t; v!= s; v = edgeTo[v].other(v)) {
-                    bottleneck = Math.min(bottleneck, edgeTo[v].residualCapacityTo(v));
+                for (int v = t; v!= s; v = edgeTo[v].getOppositeVertexAlongEdgeOf(v)) {
+                    bottleneck = Math.min(bottleneck, edgeTo[v].getResidualCapacityTo(v));
                 }
 
                 // Augment the flow.
-                for (int v = t; v != s; v = edgeTo[v].other(v)) {
-                    edgeTo[v].addResidualFlowToVertex(v, bottleneck);
+                for (int v = t; v != s; v = edgeTo[v].getOppositeVertexAlongEdgeOf(v)) {
+                    edgeTo[v].updateFlowTo(v, bottleneck);
                 }
 
                 value += bottleneck;
@@ -62,10 +62,10 @@ public class CapacityScaling {
             v = q.dequeue();
 
             for (GraphEdge e : G.adj(v)) {
-                w = e.other(v);
+                w = e.getOppositeVertexAlongEdgeOf(v);
 
                 // If there is a residual capacity from v to w
-                if (e.residualCapacityTo(w) > 0 && e.residualCapacityTo(w) >= delta) {
+                if (e.getResidualCapacityTo(w) > 0 && e.getResidualCapacityTo(w) >= delta) {
                     if (!marked[w]) {
                         edgeTo[w] = e;
                         marked[w] = true;

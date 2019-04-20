@@ -2,12 +2,7 @@
 Created by Alexander Swanson on 03/04/19.
 */
 
-
-/* Package */
-
-
 /* Imports */
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 
@@ -16,32 +11,31 @@ import java.util.LinkedList;
  */
 class Graph {
 
+    /* Fields */
+    /** Number of nodes in Graph */
     int numOfVertices;
 
-    int numOfEdges;
+    /** Adjacency list representing Graph */
+    private LinkedList<GraphEdge>[] adj;
 
-    LinkedList<GraphEdge>[] adj;
-
+    /* Constructor */
+    /** Creates a Graph with n = numOfVertices nodes */
     Graph(int numOfVertices) {
         this.numOfVertices = numOfVertices;
-        numOfEdges = 0;
         adj = (LinkedList<GraphEdge>[]) new LinkedList[numOfVertices];
         for (int v = 0; v < numOfVertices; v++) {
             adj[v] = new LinkedList<>();
         }
     }
 
+    /* Methods */
+    /** Creates a new edge for the Graph */
     void addEdge(int tail, int head, double capacity) {
         GraphEdge e = new GraphEdge(tail, head, capacity);
-        int v = e.origin();
-        int w = e.destination();
+        int v = e.getOrigin();
+        int w = e.getDestination();
         adj[v].add(e);
         adj[w].add(e);
-        numOfEdges++;
-    }
-
-    Iterable<GraphEdge> adj(int vertex) {
-        return adj[vertex];
     }
 
     @Override
@@ -51,13 +45,18 @@ class Graph {
         for (int v = 0; v < numOfVertices; v++) {
             stringBuilder.append(v).append(": ");
             for (GraphEdge e : adj[v]) {
-                if (e.destination() != v) {
-                    stringBuilder.append("\t").append(e.toString(numOfVertices)).append("\t");
+                if (e.getDestination() != v) {
+                    stringBuilder.append("\t").append(e.toStringWithEndVertex(numOfVertices)).append("\t");
                 }
             }
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();
+    }
+
+    /* Getters */
+    Iterable<GraphEdge> adj(int vertex) {
+        return adj[vertex];
     }
 
 }
