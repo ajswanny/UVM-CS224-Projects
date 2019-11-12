@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.*;
 
-@SuppressWarnings("Duplicates")
 public class WeightedIntervalScheduling {
 
     /* Fields */
